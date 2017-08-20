@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/ASADemoTelemetryDriver/App.config
+/ASADemoTelemetryDriver/bin/Debug/netcoreapp2.0
+/ASADemoTelemetryDriver/obj
+/.vs
