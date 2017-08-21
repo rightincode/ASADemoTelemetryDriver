@@ -55,7 +55,7 @@ namespace ASADemoTelemetryDriver
                     await eventHubClient.SendAsync(new EventData(Encoding.UTF8.GetBytes(message)));
                     count += 1;
 
-                    if (count == 1000)
+                    if (count == 100)
                     {
                         count = 0;
                         Console.Write(".");
