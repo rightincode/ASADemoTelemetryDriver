@@ -1,8 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Moq;
 using ASADemoTelemetryDriver;
 using ASADemoTelemetryDriver.Interfaces;
+
 
 namespace ASADemoTelemetryDriverTests
 {
@@ -23,6 +26,14 @@ namespace ASADemoTelemetryDriverTests
         {
             TempJsonProcessor testProcessor = new TempJsonProcessor(_temperatureDataReaderMock.Object);
             Assert.IsInstanceOfType(testProcessor.LoadTempReadings(), typeof(IEnumerable<TempReading>));
+        }
+
+        [TestMethod]
+        public void LoadTempReadingReturnsSortedIEnumerable()
+        {
+            TempJsonProcessor testProcessor = new TempJsonProcessor(_temperatureDataReaderMock.Object);
+            IEnumerable<TempReading> results = testProcessor.LoadTempReadings();
+            Assert.AreEqual(results.FirstOrDefault().readingDateTime, new DateTime(2017,8,11,0,56,0));
         }
     }
 }
