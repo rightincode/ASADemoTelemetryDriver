@@ -6,3 +6,6 @@
 /ASADemoTelemetryDriver/bin/Debug/netcoreapp2.0
 /ASADemoTelemetryDriver/obj
 /.vs
+/ASADemoTelemetryDriverTests/bin/Debug/netcoreapp2.0
+/ASADemoTelemetryDriverTests/obj
+/packages
