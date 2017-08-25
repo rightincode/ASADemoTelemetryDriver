@@ -23,8 +23,8 @@ namespace ASADemoTelemetryDriver
             string tempDataText = _tempReader.GetTemperatureData();
 
             List<JObject> fullReadings = JsonConvert.DeserializeObject<List<JObject>>(tempDataText);
-            
-            foreach(JObject fullReading in fullReadings)
+
+            fullReadings.ForEach(fullReading =>
             {
                 TempReading currentReading = new TempReading
                 {
@@ -35,7 +35,7 @@ namespace ASADemoTelemetryDriver
                 Double tempLat;
                 Double.TryParse(fullReading["LATITUDE"].ToString(), out tempLat);
                 currentReading.latitude = tempLat;
-                
+
                 Double tempLong;
                 Double.TryParse(fullReading["LONGITUDE"].ToString(), out tempLong);
                 currentReading.longitude = tempLong;
@@ -65,7 +65,7 @@ namespace ASADemoTelemetryDriver
                 currentReading.relativeHumidity = relativeHumidity;
 
                 tempReadings.Add(currentReading);
-            }
+            });            
 
             return tempReadings.Where(reading => reading.readingDateTime <= new DateTime(2017, 8, 12))
                         .OrderBy(reading => reading.readingDateTime);
