@@ -1,27 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using ASADemoTelemetryDriver.Interfaces;
 
 namespace ASADemoTelemetryDriver
 {
     public class TempJsonProcessor
     {
-        public TempJsonProcessor()
-        {
+        private ITemperatureDataReader _tempReader;
 
+        public TempJsonProcessor(ITemperatureDataReader tempReader)
+        {
+            _tempReader = tempReader;
         }
 
         public IEnumerable<TempReading> LoadTempReadings()
         {
             List<TempReading> tempReadings = new List<TempReading>();
 
-            StreamReader sReader = new StreamReader(ConfigurationManager.AppSettings["SourceTemperatureData"]);
+            string tempDataText = _tempReader.GetTemperatureData();
 
-            string tempDataText = sReader.ReadToEnd();
             List<JObject> fullReadings = JsonConvert.DeserializeObject<List<JObject>>(tempDataText);
             
             foreach(JObject fullReading in fullReadings)

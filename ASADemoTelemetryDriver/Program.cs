@@ -5,18 +5,24 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Azure.EventHubs;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using ASADemoTelemetryDriver.Interfaces;
 
 namespace ASADemoTelemetryDriver
 {
     class Program
     {
+        private static ServiceProvider _serviceProvider;
+
         private static EventHubClient eventHubClient;
         private static IEnumerable<TempReading> temperatureReadings;
        
         static void Main(string[] args)
-        {
-            TempJsonProcessor tempProcessor = new TempJsonProcessor();
+        {           
+            SetupServices();
+
+            TempJsonProcessor tempProcessor = new TempJsonProcessor(_serviceProvider.GetService<ITemperatureDataReader>());
             temperatureReadings = tempProcessor.LoadTempReadings();
 
             MainAsync(args).GetAwaiter().GetResult();
@@ -70,6 +76,13 @@ namespace ASADemoTelemetryDriver
             }
             Console.WriteLine(".");
             Console.WriteLine($"All messages sent.");
+        }
+
+        private static void SetupServices()
+        {
+            _serviceProvider = new ServiceCollection()
+                .AddTransient<ITemperatureDataReader, TemperatureDataReader>()
+                .BuildServiceProvider();
         }
     }
 }
