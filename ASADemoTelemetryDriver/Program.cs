@@ -23,7 +23,7 @@ namespace ASADemoTelemetryDriver
             SetupServices();
 
             TempJsonProcessor tempProcessor = new TempJsonProcessor(_serviceProvider.GetService<ITemperatureDataReader>());
-            temperatureReadings = tempProcessor.LoadTempReadings();
+            temperatureReadings = tempProcessor.TempReadings;
 
             MainAsync(args).GetAwaiter().GetResult();
         }

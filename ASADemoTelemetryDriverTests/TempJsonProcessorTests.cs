@@ -25,15 +25,14 @@ namespace ASADemoTelemetryDriverTests
         public void LoadTempReadingReturnsIEnumerable()
         {
             TempJsonProcessor testProcessor = new TempJsonProcessor(_temperatureDataReaderMock.Object);
-            Assert.IsInstanceOfType(testProcessor.LoadTempReadings(), typeof(IEnumerable<TempReading>));
+            Assert.IsInstanceOfType(testProcessor.TempReadings, typeof(IEnumerable<TempReading>));
         }
 
         [TestMethod]
         public void LoadTempReadingReturnsSortedIEnumerable()
         {
             TempJsonProcessor testProcessor = new TempJsonProcessor(_temperatureDataReaderMock.Object);
-            IEnumerable<TempReading> results = testProcessor.LoadTempReadings();
-            Assert.AreEqual(results.FirstOrDefault().readingDateTime, new DateTime(2017,8,11,0,56,0));
+            Assert.AreEqual(testProcessor.TempReadings.FirstOrDefault().readingDateTime, new DateTime(2017,8,11,0,56,0));
         }
     }
 }

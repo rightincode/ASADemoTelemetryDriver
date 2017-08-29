@@ -10,15 +10,26 @@ namespace ASADemoTelemetryDriver
     public class TempJsonProcessor
     {
         private ITemperatureDataReader _tempReader;
+        private List<TempReading> _tempReadings;
+
+        public IEnumerable<TempReading> TempReadings
+        {
+            get
+            {
+                return _tempReadings.Where(reading => reading.readingDateTime <= new DateTime(2017, 8, 12))
+                        .OrderBy(reading => reading.readingDateTime);
+            }
+        }
 
         public TempJsonProcessor(ITemperatureDataReader tempReader)
         {
             _tempReader = tempReader;
+            LoadTempReadings();
         }
 
-        public IEnumerable<TempReading> LoadTempReadings()
+        private void LoadTempReadings()
         {
-            List<TempReading> tempReadings = new List<TempReading>();
+            _tempReadings = new List<TempReading>();
 
             string tempDataText = _tempReader.GetTemperatureData();
 
@@ -64,11 +75,8 @@ namespace ASADemoTelemetryDriver
                 Double.TryParse(fullReading["HOURLYRelativeHumidity"].ToString(), out relativeHumidity);
                 currentReading.relativeHumidity = relativeHumidity;
 
-                tempReadings.Add(currentReading);
+                _tempReadings.Add(currentReading);
             });            
-
-            return tempReadings.Where(reading => reading.readingDateTime <= new DateTime(2017, 8, 12))
-                        .OrderBy(reading => reading.readingDateTime);
         }
     }
 }
